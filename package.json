@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/DesignMissoula/jotform-to-shopify/issues"
   },
-  "homepage": "https://github.com/DesignMissoula/jotform-to-shopify#readme"
+  "homepage": "https://github.com/DesignMissoula/jotform-to-shopify#readme",
+  "dependencies": {
+    "shopify-node-api": "^1.8.0"
+  }
 }

@@ -108,142 +108,155 @@ app.post('/fileupload', function(req, res){
 
 		for (i = 0; i < workSheetsFromFile[0].data.length; i++) { 
 
-		time = wait(i*100);
-		console.log('waiting... '+i+1000);
+		wait(i*1000);
+		
 
 		// console.log(slug(artist[3]).toLowerCase());
 		// res.write( '<li>' + slug(artist[3].toLowerCase()) + '</li>');
 
 		artist = workSheetsFromFile[0].data[i];
 
-		var handle = '';
+		console.log('start waiting... '+(i*1000) );
 
-		if( artist[3] ){
-			handle = slug(artist[3].toLowerCase());
-		}
-
-		var title = '';
-		if( artist[3] ){
-			title = trim(artist[3]);
-		}
-
-
-		var instagramURL = '';
-		var facebookURL = '';
-		var websiteURL = '';
-
-
-		if( artist[6] && trim(artist[6]) != '' ){
-			// console.log(instagram(artist[6]));
-			// res.write( '<li>' + instagram(artist[6]) + '</li>');
-			instagramURL = instagram(artist[6]);
-		}else{
-			// console.log('N/A');
-			// res.write('<li>N/A</li>');
-		}
-
-		if( artist[5] && trim(artist[5]) != '' ){
-			// console.log(facebook(artist[5]));
-			// res.write( '<li>' + facebook(artist[5]) + '</li>');
-			facebookURL = facebook(artist[5]);
-		}else{
-			// console.log('N/A');
-			// res.write('<li>N/A</li>');
-		}
-
-		if( artist[4] && trim(artist[4]) != '' ){
-			// console.log(website(artist[4]));
-			// res.write( '<li>' + facebook(artist[5]) + '</li>');
-			websiteURL = website(artist[4]);
-		}else{
-			// console.log('N/A');
-			// res.write('<li>N/A</li>');
-		}
-
-		var body_html = '';
-		body_html = (artist[8])? '<p class="p1">'+artist[8].replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>')+'</p>':'' ;
-		body_html = body_html + ' <p class="p1">';
-		body_html = body_html + ((body_html)? ' ':'' ) + ((websiteURL != '')?''+createURL(websiteURL, 'WEBSITE'):'' );
-
-		body_html = body_html + ((websiteURL != '' && ( facebookURL != '' || instagramURL != '' ) )? ' // ':'');
-
-		body_html = body_html + ((facebookURL != '')?''+createURL(facebookURL, 'FACEBOOK'):'' );
-
-		body_html = body_html + ((facebookURL != '' && instagramURL != '' )? ' // ':'');
-
-		body_html = body_html + ((instagramURL != '')?''+createURL(instagramURL, 'INSTAGRAM'):'' );
-		body_html = body_html + ' </p>';
-
-		body_html = trim(body_html);
-
-		// console.log(body_html);
-
-		// console.log(facebookURL); 
-		var tags = [];
-
-		if( artist[7] ){
-			tags = tags.concat( artist[7].split(/\r?\n/) );
-		}
-
-		if( artist[0].includes("BOTH") ){
-			tags.push('Missoula Holiday MADE fair');
-			tags.push('Helena Holiday MADE fair');
-		}else if( artist[0].includes("Missoula") ){
-			tags.push('Missoula Holiday MADE fair');
-		}else if( artist[0].includes("Helena") ){
-			tags.push('Helena Holiday MADE fair');
-		}
+		setTimeout(function(){
+			addArtist(artist);
+		}, (i*1000));
 		
+		function addArtist(artist){
 
-		tags = tags.join(',');
-		
-		// wait(500);
-		// console.log('waiting...');
+			console.log('done waiting... ');
 
-		request.get(artist[9], function (error, response, body) {
-	    if (!error && response.statusCode == 200) {
-	        attachment = "" + new Buffer(body).toString('base64');
-	        // console.log(attachment);
+			var handle = '';
 
-	         var post_data = {
-			  "product": {
-			  	"handle": handle,
-			    "title": title,
-			    "body_html": body_html,
-			    "vendor": "",
-			    "product_type": "artist",
-			    "published_scope": "global",
-			    "images": [
-			      {
-			        "attachment": attachment
-			      }
-			    ],
-			    "tags": tags,
-			    "variants": [
-			    ]
-			  }
+			if( artist[3] ){
+				handle = slug(artist[3].toLowerCase());
+			}
+
+			var title = '';
+			if( artist[3] ){
+				title = trim(artist[3]);
+			}
+
+			var instagramURL = '';
+			var facebookURL = '';
+			var websiteURL = '';
+
+
+			if( artist[6] && trim(artist[6]) != '' ){
+				// console.log(instagram(artist[6]));
+				// res.write( '<li>' + instagram(artist[6]) + '</li>');
+				instagramURL = instagram(artist[6]);
+			}else{
+				// console.log('N/A');
+				// res.write('<li>N/A</li>');
+			}
+
+			if( artist[5] && trim(artist[5]) != '' ){
+				// console.log(facebook(artist[5]));
+				// res.write( '<li>' + facebook(artist[5]) + '</li>');
+				facebookURL = facebook(artist[5]);
+			}else{
+				// console.log('N/A');
+				// res.write('<li>N/A</li>');
+			}
+
+			if( artist[4] && trim(artist[4]) != '' ){
+				// console.log(website(artist[4]));
+				// res.write( '<li>' + facebook(artist[5]) + '</li>');
+				websiteURL = website(artist[4]);
+			}else{
+				// console.log('N/A');
+				// res.write('<li>N/A</li>');
+			}
+
+			var body_html = '';
+			body_html = (artist[8])? '<p class="p1">'+artist[8].replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>')+'</p>':'' ;
+			body_html = body_html + ' <p class="p1">';
+			body_html = body_html + ((body_html)? ' ':'' ) + ((websiteURL != '')?''+createURL(websiteURL, 'WEBSITE'):'' );
+
+			body_html = body_html + ((websiteURL != '' && ( facebookURL != '' || instagramURL != '' ) )? ' // ':'');
+
+			body_html = body_html + ((facebookURL != '')?''+createURL(facebookURL, 'FACEBOOK'):'' );
+
+			body_html = body_html + ((facebookURL != '' && instagramURL != '' )? ' // ':'');
+
+			body_html = body_html + ((instagramURL != '')?''+createURL(instagramURL, 'INSTAGRAM'):'' );
+			body_html = body_html + ' </p>';
+
+			body_html = trim(body_html);
+
+			// console.log(body_html);
+
+			// console.log(facebookURL); 
+			var tags = [];
+
+			if( artist[7] ){
+				tags = tags.concat( artist[7].split(/\r?\n/) );
+			}
+
+			if( artist[0].includes("BOTH") ){
+				tags.push('Missoula Holiday MADE fair');
+				tags.push('Helena Holiday MADE fair');
+			}else if( artist[0].includes("Missoula") ){
+				tags.push('Missoula Holiday MADE fair');
+			}else if( artist[0].includes("Helena") ){
+				tags.push('Helena Holiday MADE fair');
 			}
 			
-			// console.log(post_data); 
 
-			Shopify.post('/admin/products.json', post_data, function(err, data, headers){
-			  console.log(err);
-			  console.log(data);
-			  console.log(headers);
-			  if(data){
-			  	res.write(JSON.stringify(data));
-			  }else if(err){
-			  	res.write(JSON.stringify(err));
-			  }
-			  
-			});
+			tags = tags.join(',');
+			
+			// wait(500);
+			// console.log('waiting...');
 
-	    }else{
-	    	console.log(artist[9]);
-	    	console.log('Request error: '+error);
-	    }
+			request.get(artist[9], function (error, response, body) {
+		    if (!error && response.statusCode == 200) {
+		        attachment = "" + new Buffer(body).toString('base64');
+		        // console.log(attachment);
 
-	});
+		         var post_data = {
+				  "product": {
+				  	"handle": handle,
+				    "title": title,
+				    "body_html": body_html,
+				    "vendor": "",
+				    "product_type": "artist",
+				    "published_scope": "global",
+				    "images": [
+				      {
+				        "attachment": attachment
+				      }
+				    ],
+				    "tags": tags,
+				    "variants": [
+				    ]
+				  }
+				}
+				
+				// console.log(post_data); 
+
+				Shopify.post('/admin/products.json', post_data, function(err, data, headers){
+				  console.log(err);
+				  console.log(data);
+				  console.log(headers);
+				  if(data){
+				  	res.write(JSON.stringify(data));
+				  }else if(err){
+				  	res.write(JSON.stringify(err));
+				  }
+				  
+				});
+
+		    }else{
+		    	console.log(artist[9]);
+		    	console.log('Request error: '+error);
+		    }
+
+		    });
+		}
+
+
+	
 
 	}; //  end for loop    
 

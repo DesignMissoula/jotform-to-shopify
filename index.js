@@ -52,8 +52,17 @@ app.set('port', (process.env.PORT || 5000));
 // // app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-  if (req.url == '/fileupload') {
-  	res.writeHead(200, {'Content-Type': 'text/html'});
+    res.writeHead(200, {'Content-Type': 'text/html'});
+    res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+    res.write('<input type="file" name="filetoupload"><br>');
+    res.write('<input type="submit">');
+    res.write('</form>');
+    return res.end();
+});
+
+app.post('/fileupload', function(req, res){
+
+	res.writeHead(200, {'Content-Type': 'text/html'});
     var form = new formidable.IncomingForm();
     form.parse(req, function (err, fields, files) {
       var oldpath = files.filetoupload.path;
@@ -232,14 +241,8 @@ app.get('/', function(req, res) {
 	});    
 
  });
-  } else {
-    res.writeHead(200, {'Content-Type': 'text/html'});
-    res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
-    res.write('<input type="file" name="filetoupload"><br>');
-    res.write('<input type="submit">');
-    res.write('</form>');
-    return res.end();
-  }
+
+
 });
 
 app.listen(app.get('port'), function() {

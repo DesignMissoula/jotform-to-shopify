@@ -165,8 +165,8 @@ http.createServer(function (req, res) {
 
 		tags = tags.join(',');
 		
-		wait(1000);
-		console.log('waiting....');
+		// wait(500);
+		// console.log('waiting...');
 
 		request.get(listObj[currentIndex][9], function (error, response, body) {
 	    if (!error && response.statusCode == 200) {
@@ -203,9 +203,6 @@ http.createServer(function (req, res) {
 			  }else if(err){
 			  	res.write(JSON.stringify(err));
 			  }
-
-			  wait(1000);
-			  console.log('waiting....');
 			  
 			});
 

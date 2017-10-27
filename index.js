@@ -108,7 +108,7 @@ app.post('/fileupload', function(req, res){
 
 		for (i = 0; i < workSheetsFromFile[0].data.length; i++) { 
 
-		wait(i+100);
+		time = wait(i*100);
 		console.log('waiting... '+i+1000);
 
 		// console.log(slug(artist[3]).toLowerCase());

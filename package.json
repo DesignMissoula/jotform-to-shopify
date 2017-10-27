@@ -4,7 +4,7 @@
   "description": "Takes jotform export and creates shopify products",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",    
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/DesignMissoula/jotform-to-shopify#readme",
   "dependencies": {
+    "express": "^4.16.2",
     "formidable": "^1.1.1",
     "node-xlsx": "^0.11.0",
     "request": "^2.83.0",

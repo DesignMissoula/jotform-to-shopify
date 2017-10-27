@@ -108,7 +108,7 @@ app.post('/fileupload', function(req, res){
 
 		for (i = 0; i < workSheetsFromFile[0].data.length; i++) { 
 
-		// wait(2000);
+		
 		
 
 		// console.log(slug(artist[3]).toLowerCase());
@@ -118,9 +118,9 @@ app.post('/fileupload', function(req, res){
 
 		console.log('start waiting... ');
 
-		setTimeout(function(){
-			addArtist(artist);
-		}, 1000);
+		wait(1000);
+
+		addArtist(artist);
 		
 		function addArtist(artist){
 
@@ -141,6 +141,7 @@ app.post('/fileupload', function(req, res){
 			var facebookURL = '';
 			var websiteURL = '';
 
+			wait(1000);
 
 			if( artist[6] && trim(artist[6]) != '' ){
 				// console.log(instagram(artist[6]));
@@ -206,10 +207,11 @@ app.post('/fileupload', function(req, res){
 
 			tags = tags.join(',');
 			
-			// wait(500);
-			// console.log('waiting...');
+			wait(500);
+			// 
 
 			request.get(artist[9], function (error, response, body) {
+			console.log('loading image...');	
 		    if (!error && response.statusCode == 200) {
 		        attachment = "" + new Buffer(body).toString('base64');
 		        // console.log(attachment);
@@ -236,13 +238,14 @@ app.post('/fileupload', function(req, res){
 				// console.log(post_data); 
 
 				Shopify.post('/admin/products.json', post_data, function(err, data, headers){
-				  console.log(err);
-				  console.log(data);
-				  console.log(headers);
+				  
+				//  console.log(data);
+				//  console.log(headers);
 				  if(data){
-				  	res.write(JSON.stringify(data));
+				  	res.write(data.product.title);
 				  }else if(err){
 				  	res.write(JSON.stringify(err));
+				  	console.log(err);
 				  }
 				  
 				});

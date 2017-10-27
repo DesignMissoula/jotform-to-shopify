@@ -118,7 +118,7 @@ app.post('/fileupload', function(req, res){
 
 		console.log('start waiting... ');
 
-		wait(1000);
+		wait(5000);
 
 		addArtist(artist);
 		
@@ -141,7 +141,7 @@ app.post('/fileupload', function(req, res){
 			var facebookURL = '';
 			var websiteURL = '';
 
-			wait(1000);
+			wait(5000);
 
 			if( artist[6] && trim(artist[6]) != '' ){
 				// console.log(instagram(artist[6]));
@@ -207,7 +207,7 @@ app.post('/fileupload', function(req, res){
 
 			tags = tags.join(',');
 			
-			wait(500);
+			wait(5000);
 			// 
 
 			res.write('<li>Loading Artist</li>');

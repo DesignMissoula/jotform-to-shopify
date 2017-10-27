@@ -210,6 +210,8 @@ app.post('/fileupload', function(req, res){
 			wait(500);
 			// 
 
+			res.write('<li>Loading Artist</li>');
+
 			request.get(artist[9], function (error, response, body) {
 			console.log('loading image...');	
 		    if (!error && response.statusCode == 200) {
@@ -241,8 +243,8 @@ app.post('/fileupload', function(req, res){
 				  
 				//  console.log(data);
 				//  console.log(headers);
-				  if(data){
-				  	res.write(data.product.title);
+				  if(data && data.product.title != undefined ){
+				  	res.write('<li>Artist Setup: '+data.product.title+'</li>');
 				  }else if(err){
 				  	res.write(JSON.stringify(err));
 				  	console.log(err);

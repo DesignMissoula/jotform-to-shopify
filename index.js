@@ -108,7 +108,7 @@ app.post('/fileupload', function(req, res){
 
 		for (i = 0; i < workSheetsFromFile[0].data.length; i++) { 
 
-		wait(2000);
+		// wait(2000);
 		
 
 		// console.log(slug(artist[3]).toLowerCase());
@@ -116,11 +116,11 @@ app.post('/fileupload', function(req, res){
 
 		artist = workSheetsFromFile[0].data[i];
 
-		console.log('start waiting... '+(2000) );
+		console.log('start waiting... ');
 
 		setTimeout(function(){
 			addArtist(artist);
-		}, 2000);
+		}, 1000);
 		
 		function addArtist(artist){
 

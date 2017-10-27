@@ -245,7 +245,7 @@ app.post('/fileupload', function(req, res){
 
 	});
 
-	});    
+	}; //  end for loop    
 
  });
 

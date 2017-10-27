@@ -103,21 +103,28 @@ app.post('/fileupload', function(req, res){
 
      
     // console.log(test);
-		workSheetsFromFile[0].data.forEach(function(currentValue, currentIndex, listObj){
+		// workSheetsFromFile[0].data.forEach(function(currentValue, currentIndex, listObj){
 		// test.forEach(function(currentValue, currentIndex, listObj){
 
-		// console.log(slug(listObj[currentIndex][3]).toLowerCase());
-		// res.write( '<li>' + slug(listObj[currentIndex][3].toLowerCase()) + '</li>');
+		for (i = 0; i < workSheetsFromFile[0].data.length; i++) { 
+
+		wait(i+100);
+		console.log('waiting... '+i+1000);
+
+		// console.log(slug(artist[3]).toLowerCase());
+		// res.write( '<li>' + slug(artist[3].toLowerCase()) + '</li>');
+
+		artist = workSheetsFromFile[0].data[i];
 
 		var handle = '';
 
-		if( listObj[currentIndex][3] ){
-			handle = slug(listObj[currentIndex][3].toLowerCase());
+		if( artist[3] ){
+			handle = slug(artist[3].toLowerCase());
 		}
 
 		var title = '';
-		if( listObj[currentIndex][3] ){
-			title = trim(listObj[currentIndex][3]);
+		if( artist[3] ){
+			title = trim(artist[3]);
 		}
 
 
@@ -126,35 +133,35 @@ app.post('/fileupload', function(req, res){
 		var websiteURL = '';
 
 
-		if( listObj[currentIndex][6] && trim(listObj[currentIndex][6]) != '' ){
-			// console.log(instagram(listObj[currentIndex][6]));
-			// res.write( '<li>' + instagram(listObj[currentIndex][6]) + '</li>');
-			instagramURL = instagram(listObj[currentIndex][6]);
+		if( artist[6] && trim(artist[6]) != '' ){
+			// console.log(instagram(artist[6]));
+			// res.write( '<li>' + instagram(artist[6]) + '</li>');
+			instagramURL = instagram(artist[6]);
 		}else{
 			// console.log('N/A');
 			// res.write('<li>N/A</li>');
 		}
 
-		if( listObj[currentIndex][5] && trim(listObj[currentIndex][5]) != '' ){
-			// console.log(facebook(listObj[currentIndex][5]));
-			// res.write( '<li>' + facebook(listObj[currentIndex][5]) + '</li>');
-			facebookURL = facebook(listObj[currentIndex][5]);
+		if( artist[5] && trim(artist[5]) != '' ){
+			// console.log(facebook(artist[5]));
+			// res.write( '<li>' + facebook(artist[5]) + '</li>');
+			facebookURL = facebook(artist[5]);
 		}else{
 			// console.log('N/A');
 			// res.write('<li>N/A</li>');
 		}
 
-		if( listObj[currentIndex][4] && trim(listObj[currentIndex][4]) != '' ){
-			// console.log(website(listObj[currentIndex][4]));
-			// res.write( '<li>' + facebook(listObj[currentIndex][5]) + '</li>');
-			websiteURL = website(listObj[currentIndex][4]);
+		if( artist[4] && trim(artist[4]) != '' ){
+			// console.log(website(artist[4]));
+			// res.write( '<li>' + facebook(artist[5]) + '</li>');
+			websiteURL = website(artist[4]);
 		}else{
 			// console.log('N/A');
 			// res.write('<li>N/A</li>');
 		}
 
 		var body_html = '';
-		body_html = (listObj[currentIndex][8])? '<p class="p1">'+listObj[currentIndex][8].replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>')+'</p>':'' ;
+		body_html = (artist[8])? '<p class="p1">'+artist[8].replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>').replace('\r\n','</p><p>')+'</p>':'' ;
 		body_html = body_html + ' <p class="p1">';
 		body_html = body_html + ((body_html)? ' ':'' ) + ((websiteURL != '')?''+createURL(websiteURL, 'WEBSITE'):'' );
 
@@ -174,16 +181,16 @@ app.post('/fileupload', function(req, res){
 		// console.log(facebookURL); 
 		var tags = [];
 
-		if( listObj[currentIndex][7] ){
-			tags = tags.concat( listObj[currentIndex][7].split(/\r?\n/) );
+		if( artist[7] ){
+			tags = tags.concat( artist[7].split(/\r?\n/) );
 		}
 
-		if( listObj[currentIndex][0].includes("BOTH") ){
+		if( artist[0].includes("BOTH") ){
 			tags.push('Missoula Holiday MADE fair');
 			tags.push('Helena Holiday MADE fair');
-		}else if( listObj[currentIndex][0].includes("Missoula") ){
+		}else if( artist[0].includes("Missoula") ){
 			tags.push('Missoula Holiday MADE fair');
-		}else if( listObj[currentIndex][0].includes("Helena") ){
+		}else if( artist[0].includes("Helena") ){
 			tags.push('Helena Holiday MADE fair');
 		}
 		
@@ -193,7 +200,7 @@ app.post('/fileupload', function(req, res){
 		// wait(500);
 		// console.log('waiting...');
 
-		request.get(listObj[currentIndex][9], function (error, response, body) {
+		request.get(artist[9], function (error, response, body) {
 	    if (!error && response.statusCode == 200) {
 	        attachment = "" + new Buffer(body).toString('base64');
 	        // console.log(attachment);
@@ -232,7 +239,7 @@ app.post('/fileupload', function(req, res){
 			});
 
 	    }else{
-	    	console.log(listObj[currentIndex][9]);
+	    	console.log(artist[9]);
 	    	console.log('Request error: '+error);
 	    }
 

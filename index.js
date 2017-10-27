@@ -1,8 +1,12 @@
 var fs = require('fs');
-var http = require('http');
+// var http = require('http');
 var formidable = require('formidable');
 var xlsx = require('node-xlsx');
 var shopifyAPI = require('shopify-node-api');
+
+var express = require('express');
+var app = express();
+
 
 var request = require('request').defaults({ encoding: null });
 
@@ -35,7 +39,19 @@ console.log(process.env.ACCESS_TOKEN);
 
 // console.log(Shopify.hostname());
 
-http.createServer(function (req, res) {
+/**
+*
+* Http Server
+*
+*/
+
+app.set('port', (process.env.PORT || 5000));
+
+// // views is directory for all template files
+// // app.set('views', __dirname + '/views');
+// // app.set('view engine', 'ejs');
+
+app.get('/', function(req, res) {
   if (req.url == '/fileupload') {
   	res.writeHead(200, {'Content-Type': 'text/html'});
     var form = new formidable.IncomingForm();

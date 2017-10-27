@@ -240,7 +240,11 @@ app.get('/', function(req, res) {
     res.write('</form>');
     return res.end();
   }
-}).listen(8080); 
+});
+
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
+}); 
 
 
 function instagram(url){

@@ -83,9 +83,9 @@ app.post('/fileupload', function(req, res){
 
      // console.log(workSheetsFromFile[0].data[1]);
 
-
      var artist = workSheetsFromFile[0].data[1];
 
+     // remove 1st row
      workSheetsFromFile[0].data.shift();
 
      // var test = [];
@@ -106,42 +106,37 @@ app.post('/fileupload', function(req, res){
 		// workSheetsFromFile[0].data.forEach(function(currentValue, currentIndex, listObj){
 		// test.forEach(function(currentValue, currentIndex, listObj){
 
-		for (i = 0; i < workSheetsFromFile[0].data.length; i++) { 
-
-		
-		
+		// for (i = 0; i < workSheetsFromFile[0].data.length; i++) { 
 
 		// console.log(slug(artist[3]).toLowerCase());
 		// res.write( '<li>' + slug(artist[3].toLowerCase()) + '</li>');
 
-		artist = workSheetsFromFile[0].data[i];
+		var i = 0;
 
-		console.log('start waiting... ');
+		console.log('start addArtist... ');
 
-		wait(2000);
-
-		addArtist(artist);
+		addArtist();
 		
-		function addArtist(artist){
+		function addArtist(){
 
-			console.log('done waiting... ');
+			console.log('Row: '+i)
+
+			artist = workSheetsFromFile[0].data[i];
 
 			var handle = '';
 
-			if( artist[3] ){
+			if( artist[3] != undefined ){
 				handle = slug(artist[3].toLowerCase());
 			}
 
 			var title = '';
-			if( artist[3] ){
+			if( artist[3] != undefined ){
 				title = trim(artist[3]);
 			}
 
 			var instagramURL = '';
 			var facebookURL = '';
 			var websiteURL = '';
-
-			wait(2000);
 
 			if( artist[6] && trim(artist[6]) != '' ){
 				// console.log(instagram(artist[6]));
@@ -207,62 +202,76 @@ app.post('/fileupload', function(req, res){
 
 			tags = tags.join(',');
 			
-			// 
+			res.write('<li>Loading Artist: '+title+'</li>');
+			console.log('Loading Artist: '+title);
 
-			res.write('<li>Loading Artist</li>');
+			request.get(artist[9], processArtist); // end request callback function
 
-			request.get(artist[9], function (error, response, body) {
-			console.log('loading image...');	
-		    if (!error && response.statusCode == 200) {
-		        attachment = "" + new Buffer(body).toString('base64');
-		        // console.log(attachment);
+			function processArtist(error, response, body) {
+				console.log('loading image...');	
+			    if (!error && response.statusCode == 200) {
+			        attachment = "" + new Buffer(body).toString('base64');
+			        // console.log(attachment);
 
-		         var post_data = {
-				  "product": {
-				  	"handle": handle,
-				    "title": title,
-				    "body_html": body_html,
-				    "vendor": "",
-				    "product_type": "artist",
-				    "published_scope": "global",
-				    "images": [
-				      {
-				        "attachment": attachment
-				      }
-				    ],
-				    "tags": tags,
-				    "variants": [
-				    ]
-				  }
-				}
-				
-				// console.log(post_data); 
+			         var post_data = {
+					  "product": {
+					  	"handle": handle,
+					    "title": title,
+					    "body_html": body_html,
+					    "vendor": "",
+					    "product_type": "artist",
+					    "published_scope": "global",
+					    "images": [
+					      {
+					        "attachment": attachment
+					      }
+					    ],
+					    "tags": tags,
+					    "variants": [
+					    ]
+					  }
+					}
+					
+					// console.log(post_data); 
 
-				Shopify.post('/admin/products.json', post_data, function(err, data, headers){
-				  
-				//  console.log(data);
-				//  console.log(headers);
-				  if(data && data.product.title != undefined ){
-				  	res.write('<li>Artist Setup: '+data.product.title+'</li>');
-				  }else if(err){
-				  	res.write(JSON.stringify(err));
-				  	console.log(err);
-				  }
-				  
-				});
+					Shopify.post('/admin/products.json', post_data, function(err, data, headers){
+					  
+					//  console.log(data);
+					//  console.log(headers);
+					  if(data && data.product.title != undefined ){
+					  	res.write('<li>Artist Complete: '+title+'</li>');
+					  }else if(err){
+					  	res.write(JSON.stringify(err));
+					  	console.log(err);
+					  }
 
-		    }else{
-		    	console.log(artist[9]);
-		    	console.log('Request error: '+error);
-		    }
+					  // console.log(i);
+					  i = i+1;
+					  if(i < workSheetsFromFile[0].data.length){
+					  	// console.log('start waiting... ');
+					  	// wait(500);
+					  	// console.log('done waiting... ');
+					  	// console.log(i);
+					  	addArtist();	
+					  }else{
+					  	res.end();
+					  }
+					  
+					  
+					});
 
-		    });
-		}
+			    }else{
+			    	console.log(artist[9]);
+			    	console.log('Request error: '+error);
+			    }
+
+		    } // end processArtist
+		}// end addArtist
 
 
 	
 
-	}; //  end for loop    
+	// }; //  end for loop    
 
  });
 

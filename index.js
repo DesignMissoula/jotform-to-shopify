@@ -187,17 +187,20 @@ app.post('/fileupload', function(req, res){
 			var tags = [];
 
 			if( artist[7] ){
-				tags = tags.concat( artist[7].split(/\r?\n/) );
+				//tags = tags.concat( artist[7].split(/\r?\n/) );
+				tags = tags.concat( artist[7].split(";") );
 			}
 
-			if( artist[0].includes("BOTH") ){
-				tags.push('Missoula Holiday MADE fair');
-				tags.push('Helena Holiday MADE fair');
-			}else if( artist[0].includes("Missoula") ){
-				tags.push('Missoula Holiday MADE fair');
-			}else if( artist[0].includes("Helena") ){
-				tags.push('Helena Holiday MADE fair');
-			}
+			// if( artist[0].includes("BOTH") ){
+			// 	tags.push('Missoula Holiday MADE fair');
+			// 	tags.push('Helena Holiday MADE fair');
+			// }else if( artist[0].includes("Missoula") ){
+			// 	tags.push('Missoula Holiday MADE fair');
+			// }else if( artist[0].includes("Helena") ){
+			// 	tags.push('Helena Holiday MADE fair');
+			// }
+
+			tags.push('Bozeman MADE fair 2018');
 			
 
 			tags = tags.join(',');
@@ -232,11 +235,12 @@ app.post('/fileupload', function(req, res){
 					  }
 					}
 					
-					// console.log(post_data); 
+					console.log(post_data); 
+					// return;
 
 					Shopify.post('/admin/products.json', post_data, function(err, data, headers){
 					  
-					//  console.log(data);
+					console.log(data);
 					//  console.log(headers);
 					  if(data && data.product.title != undefined ){
 					  	res.write('<li>Artist Complete: '+title+'</li>');
